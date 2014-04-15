@@ -128,15 +128,15 @@ namespace internal {
     return mxCreateDoubleScalar(result);
   }
 
-  template<> mxArray *mx_cast(mxArray *result) {
+  template<> inline mxArray *mx_cast(mxArray *result) {
     return result;
   }
 
-  template<> mxArray *mx_cast(bool result) {
+  template<> inline mxArray *mx_cast(bool result) {
     return mxCreateLogicalScalar(result);
   }
 
-  template<> mxArray *mx_cast(const std::string& result) {
+  template<> inline mxArray *mx_cast(const std::string& result) {
     return mxCreateString(result.c_str());
   }
 
