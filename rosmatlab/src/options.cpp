@@ -84,9 +84,11 @@ std::string Options::getString(const mxArray *value)
 {
   if (!isString(value)) return std::string();
   std::size_t len = mxGetNumberOfElements(value);
-  char temp[len + 1];
+  char *temp = new char[len+1];
   mxGetString(value, temp, sizeof(temp));
-  return std::string(temp);
+  std::string str_tmp(temp);
+  delete[] temp;
+  return str_tmp;
 }
 
 bool Options::isDoubleScalar(const mxArray *value)
@@ -407,6 +409,7 @@ Options &Options::set(const std::string &key, const mxArray *value)
       set(key, mxGetCell(value, i));
     }
   }
+  return *this;
 }
 
 void Options::warnUnused() const

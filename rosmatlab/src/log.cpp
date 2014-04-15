@@ -35,6 +35,7 @@
 #include <boost/algorithm/string.hpp>
 #include <cstdarg>
 #include <boost/shared_array.hpp>
+#include <boost/math/special_functions/fpclassify.hpp>
 
 namespace rosmatlab {
 namespace log {
@@ -53,7 +54,7 @@ static bool getLevel(const std::string& str, Level &level) {
 }
 
 static bool getLevel(double dbl, Level &level) {
-  if (isnan(dbl)) return false;
+  if (boost::math::isnan(dbl)) return false;
   unsigned int i = static_cast<unsigned int>(dbl);
   if (i >= Count) return false;
   level = static_cast<Level>(i);

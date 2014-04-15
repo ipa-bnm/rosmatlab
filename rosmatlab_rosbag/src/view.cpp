@@ -42,9 +42,9 @@
 
 
 namespace rosmatlab {
-namespace rosbag {
 
-template <> const char *Object<View>::class_name_ = "rosbag.View";
+template <> const char *Object<::rosbag::View>::class_name_ = "rosbag.View";
+namespace rosbag {
 
 View::View(int nrhs, const mxArray *prhs[])
   : Object<View>(this)

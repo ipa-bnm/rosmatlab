@@ -36,9 +36,10 @@
 #include <introspection/message.h>
 
 namespace rosmatlab {
-namespace rosbag {
 
-template <> const char *Object<Bag>::class_name_ = "rosbag.Bag";
+template <> const char *Object<::rosbag::Bag>::class_name_ = "rosbag.Bag";
+
+namespace rosbag {
 
 Bag::Bag()
   : Object<Bag>(this)

@@ -128,15 +128,15 @@ namespace internal {
     return mxCreateDoubleScalar(result);
   }
 
-  template<> mxArray *mx_cast(mxArray *result) {
+  template<> inline mxArray *mx_cast(mxArray *result) {
     return result;
   }
 
-  template<> mxArray *mx_cast(bool result) {
+  template<> inline mxArray *mx_cast(bool result) {
     return mxCreateLogicalScalar(result);
   }
 
-  template<> mxArray *mx_cast(const std::string& result) {
+  template<> inline mxArray *mx_cast(const std::string& result) {
     return mxCreateString(result.c_str());
   }
 
@@ -304,7 +304,7 @@ public:
 //  }
 
   bool has(const std::string& name) const {
-    return methods_.count(name);
+    return (methods_.count(name) > 0) ? true : false;
   }
 
   bool call(Type *object, const std::string& name, int &nlhs, mxArray **&plhs, int &nrhs, const mxArray **&prhs) const {

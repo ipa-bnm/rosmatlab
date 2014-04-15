@@ -198,7 +198,7 @@ Array Conversion::toExtendedStruct(Array target, std::size_t index, std::size_t 
   if (!fields) {
     const V_FieldName& fieldnames = expanded()->getFieldNames();
     fields = mxCreateCellMatrix(fieldnames.size(), 1);
-    for(int i = 0; i < fieldnames.size(); i++) {
+    for(size_t i = 0; i < fieldnames.size(); i++) {
       mxSetCell(fields, i, mxCreateString(fieldnames.at(i)));
     }
     mxSetField(target, 0, "fields", fields);
