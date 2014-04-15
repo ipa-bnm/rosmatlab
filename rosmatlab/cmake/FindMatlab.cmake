@@ -25,7 +25,7 @@ UNSET(MATLAB_MEX_LIBRARY CACHE)
 IF(WIN32)
 
   FILE(GLOB _auto_matlab_prefixes "C:/Program*/MATLAB*/R20*")
-
+  
   IF(CMAKE_SIZEOF_VOID_P EQUAL 4)
     # Regular x86
     SET(MATLAB_MEX_SUFFIX mexw32)
@@ -34,7 +34,7 @@ IF(WIN32)
     SET(MATLAB_MEX_SUFFIX mexw64)
     SET(MATLAB_ARCH "win64")
   ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 4)
-
+  
   # Search for available compilers:
   # (This would be neater using 'ELSEIF', but that isn't available until cmake-2.4.4)
   IF(${CMAKE_GENERATOR} MATCHES "Visual Studio 6")
@@ -52,6 +52,9 @@ IF(WIN32)
   IF(${CMAKE_GENERATOR} MATCHES "Borland")
     SET(_matlab_path_suffixes "extern/lib/win32/microsoft/bcc54")
   ENDIF(${CMAKE_GENERATOR} MATCHES "Borland")
+  IF(${CMAKE_GENERATOR} MATCHES "NMake Makefiles")
+    SET(_matlab_path_suffixes "extern/lib/${MATLAB_ARCH}/microsoft")
+  ENDIF(${CMAKE_GENERATOR} MATCHES "NMake Makefiles")
   IF(NOT _matlab_path_suffixes)
     MESSAGE(FATAL_ERROR "Generator not compatible: ${CMAKE_GENERATOR}")
   ENDIF(NOT _matlab_path_suffixes)
