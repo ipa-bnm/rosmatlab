@@ -84,9 +84,9 @@ public:
   static Object<Type> *byHandle(const mxArray *handle) {
     const mxArray *ptr = 0;
     if (!handle) return 0;
-    // mexPrintf(ROSMATLAB_PRINTF_PREFIX "Searching for object of type %s (%s)...\n", getClassName(), typeid(Type).name());
+    mexPrintf("Searching for object of type %s (%s)...\n", getClassName(), typeid(Type).name());
     if (mxIsClass(handle, class_name_)) {
-      // mexPrintf(ROSMATLAB_PRINTF_PREFIX "Handle is a %s class\n", mxGetClassName(handle));
+      mexPrintf("Handle is a %s class\n", mxGetClassName(handle));
       ptr = mxGetProperty(handle, 0, "handle");
     } else if (mxIsStruct(handle)) {
       // mexPrintf(ROSMATLAB_PRINTF_PREFIX "Handle is a struct\n");

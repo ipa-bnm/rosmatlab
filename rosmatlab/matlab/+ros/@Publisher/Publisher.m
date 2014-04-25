@@ -21,6 +21,7 @@ classdef Publisher < handle
 
     methods
         function obj = Publisher(varargin)
+			
             obj.handle = internal(obj, 'create', varargin{:});
 
             obj.Topic    = internal(obj, 'getTopic');
