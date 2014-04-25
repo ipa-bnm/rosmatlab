@@ -35,6 +35,8 @@ configure_file(setup.m.develspace.in ${CATKIN_DEVEL_PREFIX}/setup.m @ONLY)
 configure_file(setup.m.installspace.in setup.m @ONLY)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/setup.m DESTINATION .)
 
+configure_file(rossetup.bat.develspace.in ${CATKIN_DEVEL_PREFIX}/ros_setup.bat @ONLY)
+
 rosmatlab_install()
 install(DIRECTORY include/ DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION})
 install(DIRECTORY src/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/src)
