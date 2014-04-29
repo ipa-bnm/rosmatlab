@@ -1,0 +1,3 @@
+message("${lib}_OUTPUT_NAME is being renamed to ${${lib}_RENAME} in ${GLOBAL_MATLAB_DESTINATION}/${${lib}_DESTINATION}")
+file(RENAME "${CMAKE_SOURCE_DIR}/../devel/${GLOBAL_MATLAB_DESTINATION}/${${lib}_DESTINATION}/${${lib}_OUTPUT_NAME}.lib" "${CMAKE_SOURCE_DIR}/../devel/${GLOBAL_MATLAB_DESTINATION}/${${lib}_DESTINATION}/${${lib}_RENAME}.lib")
+file(RENAME "${CMAKE_SOURCE_DIR}/../devel/${GLOBAL_MATLAB_DESTINATION}/${${lib}_DESTINATION}/${${lib}_OUTPUT_NAME}.mexw32" "${CMAKE_SOURCE_DIR}/../devel/${GLOBAL_MATLAB_DESTINATION}/${${lib}_DESTINATION}/${${lib}_RENAME}.mexw32")

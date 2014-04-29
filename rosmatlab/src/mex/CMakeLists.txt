@@ -13,10 +13,10 @@ target_link_libraries(ros_walltime_now rosmatlab)
 add_mex(ros_log ros_log.cpp OUTPUT_NAME log DESTINATION +ros)
 target_link_libraries(ros_log rosmatlab)
 
-add_mex(ros_subscriber ros_subscriber.cpp OUTPUT_NAME internal DESTINATION +ros/@Subscriber/private)
+add_mex(ros_subscriber ros_subscriber.cpp OUTPUT_NAME subscriber_internal DESTINATION +ros/@Subscriber/private RENAME internal)
 target_link_libraries(ros_subscriber rosmatlab)
 
-add_mex(ros_publisher ros_publisher.cpp OUTPUT_NAME internal DESTINATION +ros/@Publisher/private)
+add_mex(ros_publisher ros_publisher.cpp OUTPUT_NAME publisher_internal DESTINATION +ros/@Publisher/private RENAME internal)
 target_link_libraries(ros_publisher rosmatlab)
 
 add_mex(ros_param ros_param.cpp OUTPUT_NAME param DESTINATION +ros)

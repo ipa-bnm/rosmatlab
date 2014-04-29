@@ -31,7 +31,7 @@ endif()
 include(CMakeParseArguments)
 function(add_mex lib)
   
-  cmake_parse_arguments(${lib} "" "OUTPUT_NAME;PACKAGE;DESTINATION" "SOURCES" ${ARGN})
+  cmake_parse_arguments(${lib} "" "OUTPUT_NAME;PACKAGE;DESTINATION;RENAME" "SOURCES" ${ARGN})
   set(${lib}_SOURCES ${${lib}_SOURCES} ${${lib}_UNPARSED_ARGUMENTS})
 
   ADD_MEX_FILE(${lib} ${${lib}_SOURCES})
@@ -63,13 +63,19 @@ function(add_mex lib)
   if(DEFINED ${lib}_PACKAGE)
     set(${lib}_DESTINATION "+${${lib}_PACKAGE}/${${lib}_DESTINATION}")
   endif()
+  
+  if (DEFINED ${lib}_RENAME)
+    message("Current executable dir: ${CMAKE_SOURCE_DIR}")
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/post_install_rename.cmake.in" "${CMAKE_CURRENT_BUILD_DIR}/post_install_${lib}_rename.cmake")
+    set_target_properties(${lib} PROPERTIES POST_INSTALL_SCRIPT "${CMAKE_CURRENT_BUILD_DIR}/post_install_${lib}_rename.cmake")
+  endif()
 
   # Set output path
-  if(MEX_OUTPUT_PATH)
-    set_target_properties(${lib} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${MEX_OUTPUT_PATH}/${${lib}_DESTINATION}")
-  else()
-    set_target_properties(${lib} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${${lib}_DESTINATION}")
-  endif()
+  # if(MEX_OUTPUT_PATH)
+    # set_target_properties(${lib} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${MEX_OUTPUT_PATH}/${${lib}_DESTINATION}")
+  # else()
+    # set_target_properties(${lib} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${${lib}_DESTINATION}")
+  # endif()
   
   # Install
   install(TARGETS ${lib} DESTINATION ${GLOBAL_MATLAB_DESTINATION}/${${lib}_DESTINATION})
