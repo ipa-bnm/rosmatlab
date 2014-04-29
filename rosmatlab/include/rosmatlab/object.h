@@ -351,6 +351,8 @@ Type *mexClassHelper(int &nlhs, mxArray **&plhs, int &nrhs, const mxArray **&prh
     return 0;
   }
 
+  mexPrintf("Method: %s\n", method.c_str());
+  
   // for all other methods the object must exist
   if (!object) {
     throw Exception("Instance not found");

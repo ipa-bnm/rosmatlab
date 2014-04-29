@@ -70,12 +70,12 @@ function(add_mex lib)
     set_target_properties(${lib} PROPERTIES POST_INSTALL_SCRIPT "${CMAKE_CURRENT_BUILD_DIR}/post_install_${lib}_rename.cmake")
   endif()
 
-  # Set output path
-  # if(MEX_OUTPUT_PATH)
-    # set_target_properties(${lib} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${MEX_OUTPUT_PATH}/${${lib}_DESTINATION}")
-  # else()
-    # set_target_properties(${lib} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${${lib}_DESTINATION}")
-  # endif()
+  #Set output path
+  if(MEX_OUTPUT_PATH)
+    set_target_properties(${lib} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${MEX_OUTPUT_PATH}/${${lib}_DESTINATION}")
+  else()
+    set_target_properties(${lib} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${${lib}_DESTINATION}")
+  endif()
   
   # Install
   install(TARGETS ${lib} DESTINATION ${GLOBAL_MATLAB_DESTINATION}/${${lib}_DESTINATION})
