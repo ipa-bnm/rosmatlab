@@ -85,20 +85,9 @@ std::string Options::getString(const mxArray *value)
   if (!isString(value)) return std::string();
   std::size_t len = mxGetNumberOfElements(value);
   char *temp = new char[len+1];
-  mexPrintf("sizeof(temp): %i", len);
-  int success = mxGetString(value, temp, len+1);
-  if (success!=0)
-	mexPrintf("OOOOOOOOOOOOOOOOOOOPS");
-  mexPrintf("\ncontent: ");
-  for (std::size_t _i=0;_i<len;_i++) {
-	char tmp_ch = *(temp+_i);
-	if (tmp_ch=='\0') tmp_ch = '0';
-	mexPrintf("'%c',", tmp_ch);
-  }
-  mexPrintf("\n\n");
+  mxGetString(value, temp, len+1);
   std::string str_tmp(temp);
   delete[] temp;
-  mexPrintf("String %s has length %i\n", str_tmp.c_str(), len);
   return str_tmp;
 }
 
