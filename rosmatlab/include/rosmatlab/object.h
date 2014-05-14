@@ -39,6 +39,7 @@
 #include "mex.h"
 
 #include <stdint.h>
+#include <introspection/introspection.h>
 
 namespace rosmatlab {
 
@@ -84,15 +85,15 @@ public:
   static Object<Type> *byHandle(const mxArray *handle) {
     const mxArray *ptr = 0;
     if (!handle) return 0;
-    mexPrintf("Searching for object of type %s (%s)...\n", getClassName(), typeid(Type).name());
+    // //mexPrintf("Searching for object of type %s (%s)...\n", getClassName(), typeid(Type).name());
     if (mxIsClass(handle, class_name_)) {
-      mexPrintf("Handle is a %s class\n", mxGetClassName(handle));
+      // //mexPrintf("Handle is a %s class\n", mxGetClassName(handle));
       ptr = mxGetProperty(handle, 0, "handle");
     } else if (mxIsStruct(handle)) {
-      // mexPrintf(ROSMATLAB_PRINTF_PREFIX "Handle is a struct\n");
+      // //mexPrintf(ROSMATLAB_PRINTF_PREFIX "Handle is a struct\n");
       ptr = mxGetField(handle, 0, "handle");
     } else if (mxIsDouble(handle)) {
-      // mexPrintf(ROSMATLAB_PRINTF_PREFIX "Handle is a double\n");
+      // //mexPrintf(ROSMATLAB_PRINTF_PREFIX "Handle is a double\n");
       ptr = handle;
     }
     if (!ptr || !mxIsDouble(ptr) || !(mxGetNumberOfElements(ptr) > 0) || !mxGetPr(ptr)) throw Exception("invalid handle");
@@ -329,7 +330,9 @@ Type *mexClassHelper(int &nlhs, mxArray **&plhs, int &nrhs, const mxArray **&prh
   if (nrhs < 1) {
     throw ArgumentException(1);
   }
-
+  
+//  //mexPrintf("Count messages: %i", cpp_introspection::messages().size());
+  
   Type *object = getObject<Type>(*prhs++); nrhs--;
   method.clear();
   if (nrhs) { method = Options::getString(*prhs++); nrhs--; }
@@ -337,21 +340,25 @@ Type *mexClassHelper(int &nlhs, mxArray **&plhs, int &nrhs, const mxArray **&prh
   // construction
   if (method == "create") {
     delete object;
-    // mexPrintf(ROSMATLAB_PRINTF_PREFIX "Creating new %s object\n", Object<Type>::getClassName().c_str());
+    //mexPrintf("Creating new %s object\n", Object<Type>::getClassName());
     object = new Type(nrhs, prhs);
     plhs[0] = object->handle();
     method.clear();
-    return object;
+	return object;
   }
 
   // destruction
   if (method == "delete") {
-    // mexPrintf(ROSMATLAB_PRINTF_PREFIX "Deleting %s object\n", Object<Type>::getClassName().c_str());
+    // //mexPrintf(ROSMATLAB_PRINTF_PREFIX "Deleting %s object\n", Object<Type>::getClassName().c_str());
     delete object;
     return 0;
   }
 
-  mexPrintf("Method: %s\n", method.c_str());
+  // Debug output
+//  std::vector<std::string> messages(cpp_introspection::messages());
+  //mexPrintf("%i messages loaded\n", messages.size());
+//  for (std::vector<std::string>::iterator it = messages.begin();it!=messages.end();++it)
+	//mexPrintf("Message %s loaded\n", (*it).c_str());
   
   // for all other methods the object must exist
   if (!object) {

@@ -32,6 +32,8 @@
 #include <introspection/package.h>
 #include <introspection/message.h>
 
+#include <iostream>
+
 // #include <introspection/@package@/package.h>
 
 #include <mex.h>
@@ -39,16 +41,18 @@
 // #include <@package@/@msg@.h>
 // typedef ::@package@::@msg@ MessageType;
 
-using namespace rosmatlab;
+//using namespace rosmatlab;
 using cpp_introspection::PackagePtr;
 using cpp_introspection::MessagePtr;
 
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
   try {
-    PackagePtr package = cpp_introspection::loadPackage("@package@");
+  
+	// PackagePtr package = cpp_introspection::loadPackage("@package@");
+	  std::cout << "in mex_message.cpp.in of @package@/@msg@, map@" << &cpp_introspection::g_messages_by_name << std::endl;
     MessagePtr message = cpp_introspection::messageByDataType("@package@/@msg@");
-    if (!message) throw UnknownDataTypeException("@package@/@msg@");
+    if (!message) throw rosmatlab::UnknownDataTypeException("We're here @package@/@msg@");
 
     plhs[0] = message_constructor(message, nlhs, plhs, nrhs, prhs);
 
