@@ -50,6 +50,27 @@ void mexFunction( int nlhs, mxArray *plhs[],
       .throwOnUnknown();
   }
 
+  //Load the global pointer if it is already set, else set it
+  	std::cout << "Try to access the pointer-variable from the workspace" << std::endl;
+  	mxArray * g_vars_address;
+  	g_vars_address = mexGetVariable("global", "rosmatlab_cppintrospection_gvars_pointer");
+  	bool isValidPointer = g_vars_address!=0;
+  	if (isValidPointer)
+  		isValidPointer = mxIsDouble(g_vars_address);
+  	if (!isValidPointer)
+  	{
+  		cpp_introspection::gvars = new cpp_introspection::G_Vars;
+  		g_vars_address = mxCreateDoubleMatrix(1,1,mxREAL);
+  		mxGetPr(g_vars_address)[0] = static_cast<double>((size_t) cpp_introspection::gvars);
+  		mexPutVariable("global", "rosmatlab_cppintrospection_gvars_pointer", g_vars_address);
+  		std::cout << "Created new global pointer at address " << cpp_introspection::gvars << std::endl;
+  	} else
+  	{
+  		std::cout << "It's a double!" << std::endl;
+  		cpp_introspection::gvars = (cpp_introspection::G_Vars *) static_cast<int>(mxGetPr(g_vars_address)[0]);
+  		std::cout << "Loaded an existing pointer at address " << cpp_introspection::gvars << std::endl;
+  	}
+
   try {
     /* Initialize ROS node */
     init();

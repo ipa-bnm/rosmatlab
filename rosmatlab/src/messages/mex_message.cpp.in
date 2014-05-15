@@ -47,14 +47,43 @@ using cpp_introspection::MessagePtr;
 
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
+
+	//Load the global pointer if it is already set, else set it
+	std::cout << "Try to access the pointer-variable from the workspace" << std::endl;
+	mxArray * g_vars_address;
+	g_vars_address = mexGetVariable("caller", "rosmatlab_cppintrospection_gvars_pointer");
+	bool isValidPointer = g_vars_address!=0;
+	if (isValidPointer)
+		isValidPointer = mxIsDouble(g_vars_address);
+	if (!isValidPointer)
+	{
+		cpp_introspection::gvars = new cpp_introspection::G_Vars;
+		g_vars_address = mxCreateDoubleMatrix(1,1,mxREAL);
+		mxGetPr(g_vars_address)[0] = static_cast<double>((size_t) cpp_introspection::gvars);
+		mexPutVariable("caller", "rosmatlab_cppintrospection_gvars_pointer", g_vars_address);
+		std::cout << "Created new global pointer at address " << cpp_introspection::gvars << std::endl;
+	} else
+	{
+		std::cout << "It's a double!" << std::endl;
+		cpp_introspection::gvars = (cpp_introspection::G_Vars *) static_cast<int>(mxGetPr(g_vars_address)[0]);
+		std::cout << "Loaded an existing pointer at address " << cpp_introspection::gvars << std::endl;
+	}
+
+	std::cout << "Messages in byname, size=" << cpp_introspection::gvars->g_messages_by_name.size() << std::endl;
+	for (cpp_introspection::M_Message::iterator it=cpp_introspection::gvars->g_messages_by_name.begin();it!=cpp_introspection::gvars->g_messages_by_name.end();++it) {
+		std::cout << it->first << std::endl;
+	}
+
+
   try {
   
 	// PackagePtr package = cpp_introspection::loadPackage("@package@");
-	  std::cout << "in mex_message.cpp.in of @package@/@msg@, map@" << &cpp_introspection::g_messages_by_name << std::endl;
+//	  std::cout << "in mex_message.cpp.in of @package@/@msg@, map@" << &cpp_introspection::g_messages_by_name << std::endl;
+
     MessagePtr message = cpp_introspection::messageByDataType("@package@/@msg@");
     if (!message) throw rosmatlab::UnknownDataTypeException("We're here @package@/@msg@");
 
-    plhs[0] = message_constructor(message, nlhs, plhs, nrhs, prhs);
+    plhs[0] = rosmatlab::message_constructor(message, nlhs, plhs, nrhs, prhs);
 
   } catch(rosmatlab::Exception& e) {
     mexErrMsgTxt(e.what());
