@@ -66,8 +66,8 @@ function(add_mex lib)
   
   if (DEFINED ${lib}_RENAME)
     message("Current executable dir: ${CMAKE_SOURCE_DIR}")
-    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/post_install_rename.cmake.in" "${CMAKE_CURRENT_BUILD_DIR}/post_install_${lib}_rename.cmake")
-    set_target_properties(${lib} PROPERTIES POST_INSTALL_SCRIPT "${CMAKE_CURRENT_BUILD_DIR}/post_install_${lib}_rename.cmake")
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/post_install_rename.cmake.in" "${CATKIN_DEVEL_PREFIX}/etc/post_install_${lib}_rename.cmake")
+    set_target_properties(${lib} PROPERTIES POST_INSTALL_SCRIPT "${CATKIN_DEVEL_PREFIX}/etc/post_install_${lib}_rename.cmake")
   endif()
 
   #Set output path
